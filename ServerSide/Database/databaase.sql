@@ -47,56 +47,62 @@ values  (1001, "Teacher", "Hamdard123"),
 select * from tbl_teachers;
 
 insert into tbl_rooms(room_id, capacity, no_of_lights, no_of_fans, no_of_ac)
-values  (01, 60, 14, 9, 2),
-		(02, 60, 14, 9, 2),
-		(03, 60, 14, 9, 2),
-		(04, 60, 14, 9, 2),
-		(05, 60, 14, 9, 2),
-		(06, 60, 14, 9, 2),
-		(07, 30, 7, 4, 0),
-		(08, 30, 7, 4, 0),
-		(09, 60, 14, 9, 2),
-		(10, 60, 14, 9, 2),
-		(11, 30, 7, 4, 0),
-		(12, 30, 7, 4, 0),
-		(13, 60, 14, 9, 2),
-		(14, 60, 14, 9, 2),
-		(15, 60, 14, 9, 2);
+values  (1001, 60, 14, 9, 2),
+		(1002, 60, 14, 9, 2),
+		(1003, 60, 14, 9, 2),
+		(1004, 60, 14, 9, 2),
+		(1005, 60, 14, 9, 2),
+		(1006, 60, 14, 9, 2),
+		(1007, 30, 7, 4, 0),
+		(1008, 30, 7, 4, 0),
+		(1009, 60, 14, 9, 2),
+		(1010, 60, 14, 9, 2),
+		(1011, 30, 7, 4, 0),
+		(1012, 30, 7, 4, 0),
+		(1013, 60, 14, 9, 2),
+		(1014, 60, 14, 9, 2),
+		(1015, 60, 14, 9, 2);
 
 insert into tbl_courses(course_id , teacher_id, course_name, course_credit_hours,total_students_enrolled)
-values  (0001, 1009, "Basic Electroni", 2, 27),
-		(0002, 1004, "Functonal English", 1, 46),
-		(0003, 1007, "Pakistan Studeies", 1, 54),
-		(0004, 1010, "Islamic Studies", 1, 43),
-		(0005, 1009, "Numerical Computing", 2, 27),
-		(0006, 1006, "Compiler Construction", 1, 44),
-		(0007, 1011, "Marketing and Management", 2, 55),
-		(0008, 1011, "Discrete Structure", 2, 33),
-		(0009, 1005, "Objecct Oriented Programming", 1, 45),
-		(0010, 1003, "Operating System", 1, 42),
-		(0011, 1008, "Software Project Management", 1, 23),
-		(0012, 1011, "Financial Management", 12, 31);
+values  (1001, 1001, "Basic Electronics", 				2, 	27),
+		(1002, 1001, "Functonal English", 				2, 	46),
+		(1003, 1001, "Pakistan Studies", 				2, 	54),
+		(1004, 1001, "Islamic Studies", 				2, 	43),
+		(1005, 1002, "Numerical Computing", 			3, 	27),
+		(1006, 1002, "Compiler Construction", 			3, 	44),
+		(1007, 1002, "Marketing and Management", 		3, 	55),
+		(1008, 1002, "Discrete Structure", 				3, 	33),
+		(1009, 1002, "Objecct Oriented Programming", 	3, 	45),
+		(1010, 1002, "Operating System", 				3, 	42),
+		(1011, 1003, "Software Project Management",		3, 	23),
+		(1012, 1003, "Financial Management", 			3, 31);
 
 select * from tbl_courses;
 
-insert into tbl_Schedule(room_id, course_id, slot, day_of_week)
-values  (01, 0002, 1, 1),
-		(01, 0002, 2, 1),
-        (01, 0010, 3, 1),
-        (01, 0010, 4, 1),
-        (01, 0005, 5, 1),
-        (01, 0005, 6, 1),
-        (01, 0009, 1, 2),
-        (01, 0006, 3, 2),
-        (01, 0006, 4, 2),
-        (01, 0012, 7, 2),
-        (01, 0008, 1, 3),
-        (01, 0011, 5, 3),
-        (01, 0007, 1, 4),
-        (01, 0007, 2, 4),
-        (01, 0011, 4, 4),
-        (01, 0001, 3, 5),
-        (01, 0001, 4, 5);
+insert into tbl_Schedule(room_id, 	course_id, 	slot, 	day_of_week, 	class_length)
+values  				(1001, 		1001, 		1, 		1,				2),
+						(1001, 		1002, 		3, 		1,				2),
+        				(1001, 		1003, 		5, 		1,				2),
+        				(1001, 		1004, 		1, 		2,				2),
+        				(1001, 		1005, 		7, 		1,				1),
+        				(1001, 		1005, 		3, 		2,				2),
+        				(1001, 		1006, 		7, 		3,				1),
+        				(1001, 		1006, 		5, 		2,				2),
+        				(1001, 		1007, 		7, 		2,				1),
+        				(1001, 		1007, 		1, 		3,				2),
+        				(1001, 		1008, 		7, 		4,				1),
+        				(1001, 		1008, 		3, 		3,				2),
+        				(1001, 		1009, 		1, 		5,				1),
+        				(1001, 		1009, 		5, 		3,				2),
+        				(1001, 		1010, 		2, 		5,				1),
+        				(1001, 		1010, 		1, 		4,				2),
+        				(1001, 		1011, 		3, 		5,				1),
+						(1001, 		1011, 		3, 		4,				2),
+						(1001, 		1012, 		4, 		5,				1),
+						(1001, 		1012, 		5, 		4,				2);
+
+
+
         
 select * from tbl_Schedule;
 
@@ -217,3 +223,8 @@ values  (2019-01-07, 01, 1, 2, 4),
         (2019-01-11, 01, 2, 2, 3);
 
 select * from tbl_history;
+
+/*View for getting teacher id against courses*/
+select tbl_courses.teacher_id, tbl_schedule.room_id, tbl_schedule.course_id, tbl_schedule.day_of_week, tbl_schedule.slot, tbl_schedule.class_length
+from tbl_courses left join tbl_schedule 
+on tbl_courses.course_id = tbl_schedule.course_id where teacher_id = 1001;
