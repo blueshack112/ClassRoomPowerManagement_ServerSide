@@ -3,67 +3,81 @@ header("Content-type:application/json");
 $_SERVER['CONTENT_TYPE'] = "application/x-www-form-urlencoded"; 
 error_reporting (E_ALL ^ E_WARNING && E_NOTICE);
 
-//
-class ScheduleItem {
-    var $courseName;
-    var $teacherID;
+//Response object
+class RoomStatus {
+    var $classDate;
     var $roomID;
-    var $courseID;
-    var $dayOfWeek;
-    var $slot;
+    var $courseName;
+    var $teacherFirstName;
+    var $teacherLastName;
     var $classLength;
+    var $attendance;
+
+    function __construct($roomID)
+    {
+        $this->classDate = "";
+        $this->roomID = $roomID;
+        $this->courseName = "";
+        $this->teacherFirstName = "";
+        $this->teacherLastName = "";
+        $this->classLength = 0;
+        $this->attendance = 0;
+    }
 }
 
-//response class
-class SchedResponse {
-    var $scheduleFound;
-    var $scheduleItems;
+//Response class
+class RoomStatusResponse {
+    var $roomIsActive;
+    var $roomResponse;
 
-    function __construct () {
-        $this->scheduleFound = false;
-        $this->scheduleItems = array();
+    function __construct ($roomID) {
+        $this->roomIsActive = false;
+        $this->roomResponse = new RoomStatus($roomID);
     }
 }
 
 //Connection properties
 $servername = "localhost";
-$username = "areeba";
-$password = "areeba";
+$username = "root";
+$password = "admin";
 
-// Create connection
+//Create connection
 $conn = new mysqli($servername, $username, $password);
 
-// Check connection
+//Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-//Extract id and password from GET
-$userID = $_POST["userID"];
+//Extract roomID from POST
+$roomID = $_POST["roomID"];
 
-//Run query for login authorization
-$getScheduleQuery = "SELECT * FROM db_classroom_management.view_teacher_schedule where teacher_id=".$userID;
-$getScheduleQueryResult = mysqli_query($conn, $getScheduleQuery);
+//Run query for room status checking
+$roomStatusQuery = "SELECT * FROM db_classroom_management.view_room_status where room_id=".$roomID;
+$roomStatusQueryResult = mysqli_query($conn, $roomStatusQuery);
 
-//Handle login authorization response
-$numberOfRows = mysqli_num_rows($getScheduleQueryResult);
-$response = new SchedResponse;
+//Handle room status response
+$numberOfRows = mysqli_num_rows($roomStatusQueryResult);
+$response = new RoomStatusResponse($roomID);
 
 if ($numberOfRows >= 1) {
-    $response->scheduleFound = true;
-    while ($row = mysqli_fetch_assoc($getScheduleQueryResult)) {
-        $temp = new ScheduleItem();
-        $temp->courseName = $row['course_name'];
-        $temp->teacherID = $row['teacher_id'];
+    $response->roomIsActive = true;
+    while ($row = mysqli_fetch_assoc($roomStatusQueryResult)) {
+        $temp = new RoomStatus($roomID);
+        $temp->classDate = $row['class_date'];
         $temp->roomID = $row['room_id'];
-        $temp->courseID = $row['course_id'];
-        $temp->dayOfWeek = $row['day_of_week'];
-        $temp->slot = $row['slot'];
+        $temp->courseName = $row['course_name'];
+        $temp->teacherFirstName = $row['teacher_first_name'];
+        $temp->teacherLastName = $row['teacher_last_name'];
         $temp->classLength = $row['class_length'];
-        $response->scheduleItems[] = $temp;
+        $temp->attendance = $row['attendance'];
+        if ($temp->attendance == 0) {
+            $temp->attendance = -1;
+        }
+        $response->roomResponse = $temp;
     }
 } else {
-    $response->scheduleFound = false;
+    $response->roomIsActive = false;
 }
 
 echo json_encode($response); 

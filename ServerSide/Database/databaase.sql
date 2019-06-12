@@ -1,10 +1,10 @@
 insert into tbl_relays (relay_id, no_of_associated_lights, no_of_assiocuated_fans, no_of_assiocuated_acs) 
-values  (101, 0, 0, 1),
+values  (101, 3, 3, 1),
 		(102, 0, 0, 1),
-		(103, 2, 3, 0),
-		(104, 3, 2, 0),
-		(105, 6, 2, 0),
-        (106, 3, 2, 0);
+		(103, 4, 4, 0),
+		(104, 4, 4, 0),
+		(105, 4, 4, 0),
+        (106, 4, 4, 0);
         
 select * from  tbl_relays;
 
@@ -106,6 +106,9 @@ values  				(1001, 		1001, 		1, 		1,				2),
         
 select * from tbl_Schedule;
 
+insert into tbl_room_status values (1001,1001,101102103,25,curdate(), 1);
+
+/*Below is bullshit*/
 insert into tbl_room_status(room_id, course_id, relay_used, attendance, date, slot)
 values
         (01, 0002, 101, 22, 2019-01-07, 1),
@@ -228,3 +231,11 @@ select * from tbl_history;
 select tbl_courses.teacher_id, tbl_schedule.room_id, tbl_schedule.course_id, tbl_schedule.day_of_week, tbl_schedule.slot, tbl_schedule.class_length
 from tbl_courses left join tbl_schedule 
 on tbl_courses.course_id = tbl_schedule.course_id where teacher_id = 1001;
+
+/*View for getting Room status for HOD's app panel*/
+select tbl_room_status.class_date, tbl_room_status.room_id, tbl_courses.course_name, tbl_teachers.teacher_first_name,
+ tbl_teachers.teacher_last_name, tbl_schedule.class_length, tbl_room_status.attendance
+from tbl_room_status 
+left join tbl_courses on tbl_room_status.course_id = tbl_courses.course_id
+left join tbl_teachers on tbl_courses.teacher_id = tbl_teachers.teacher_id
+left join tbl_schedule on tbl_courses.course_id = tbl_schedule.course_id;

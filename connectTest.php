@@ -13,8 +13,8 @@ class Relay {
 
 //Connection properties
 $servername = "localhost";
-$username = "areeba";
-$password = "areeba";
+$username = "root";
+$password = "admin";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password);
