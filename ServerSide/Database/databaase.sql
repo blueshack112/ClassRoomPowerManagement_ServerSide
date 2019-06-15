@@ -228,7 +228,7 @@ values  (2019-01-07, 01, 1, 2, 4),
 select * from tbl_history;
 
 /*View for getting teacher id against courses*/
-select tbl_courses.teacher_id, tbl_schedule.room_id, tbl_schedule.course_id, tbl_schedule.day_of_week, tbl_schedule.slot, tbl_schedule.class_length
+select tbl_courses.teacher_id, tbl_courses.course_name, tbl_schedule.room_id, tbl_schedule.course_id, tbl_schedule.day_of_week, tbl_schedule.slot, tbl_schedule.class_length
 from tbl_courses left join tbl_schedule 
 on tbl_courses.course_id = tbl_schedule.course_id where teacher_id = 1001;
 
