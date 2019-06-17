@@ -1,13 +1,12 @@
-<? this is not done at alL!!!! php
+<?php
 header("Content-type:application/json");
 $_SERVER['CONTENT_TYPE'] = "application/x-www-form-urlencoded"; 
 error_reporting (E_ALL ^ E_WARNING && E_NOTICE);
 
 //Response class
-class RoomStatusResponse {
+class AddAttendanceResponse {
     var $successful;
-
-    function __construct ($roomID) {
+    function __construct () {
         $this->successful = false;
     }
 }
@@ -27,21 +26,22 @@ if ($conn->connect_error) {
 
 //Extract data from POST
 $roomID = $_POST["roomID"];
+$courseID = $_POST["courseID"];
+$attendance = $_POST["attendance"];
+
 
 //Run query for schedule ovverride
-$roomStatusQuery = "SELECT * FROM db_classroom_management.view_room_status where room_id=".$roomID;
-$roomStatusQueryResult = mysqli_query($conn, $roomStatusQuery);
+$addAttendanceQuery = "UPDATE db_classroom_management.tbl_room_status set attendance =".$attendance." where room_id =".$roomID." AND course_id =".$courseID;
+$addAttendanceQueryResult = mysqli_query($conn, $addAttendanceQuery);
 
 //Handle schedule ovverride response
-$numberOfRows = mysqli_num_rows($roomStatusQueryResult);
-$response = new RoomStatusResponse($roomID);
+$numberOfRows = mysqli_num_rows($addAttendanceQueryResult);
+$response = new AddAttendanceResponse();
 
 
 //Check if query worked properly
-if ($numberOfRows >= 1) {
-    $response->roomIsActive = true;
-    
-    
+if ($addAttendanceQueryResult == true) {
+    $response->successful = true;  
 } else {
     $response->roomIsActive = false;
 }

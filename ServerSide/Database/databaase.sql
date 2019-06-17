@@ -229,12 +229,14 @@ select * from tbl_history;
 
 /*View for getting teacher id against courses*/
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_teacher_schedule` AS select `tbl_courses`.`course_name` AS `course_name`,`tbl_courses`.`teacher_id` AS `teacher_id`,`tbl_schedule`.`room_id` AS `room_id`,`tbl_schedule`.`course_id` AS `course_id`,`tbl_schedule`.`day_of_week` AS `day_of_week`,`tbl_schedule`.`slot` AS `slot`,`tbl_schedule`.`class_length` AS `class_length` from (`tbl_courses` left join `tbl_schedule` on((`tbl_courses`.`course_id` = `tbl_schedule`.`course_id`)));
+
 select tbl_courses.teacher_id, tbl_courses.course_name, tbl_schedule.room_id, tbl_schedule.course_id, tbl_schedule.day_of_week, tbl_schedule.slot, tbl_schedule.class_length
 from tbl_courses left join tbl_schedule 
 on tbl_courses.course_id = tbl_schedule.course_id where teacher_id = 1001;
 
 /*View for getting Room status for HOD's app panel*/
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_room_status` AS select `tbl_room_status`.`class_date` AS `class_date`,`tbl_room_status`.`room_id` AS `room_id`,`tbl_courses`.`course_name` AS `course_name`,`tbl_teachers`.`teacher_first_name` AS `teacher_first_name`,`tbl_teachers`.`teacher_last_name` AS `teacher_last_name`,`tbl_schedule`.`class_length` AS `class_length`,`tbl_room_status`.`attendance` AS `attendance` from (((`tbl_room_status` left join `tbl_courses` on((`tbl_room_status`.`course_id` = `tbl_courses`.`course_id`))) left join `tbl_teachers` on((`tbl_courses`.`teacher_id` = `tbl_teachers`.`teacher_id`))) left join `tbl_schedule` on((`tbl_courses`.`course_id` = `tbl_schedule`.`course_id`)));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_room_status` AS select `tbl_room_status`.`class_date` AS `class_date`,`tbl_room_status`.`room_id` AS `room_id`,`tbl_courses`.`course_id` AS `course_id`,`tbl_courses`.`course_name` AS `course_name`,`tbl_teachers`.`teacher_first_name` AS `teacher_first_name`,`tbl_teachers`.`teacher_last_name` AS `teacher_last_name`,`tbl_schedule`.`class_length` AS `class_length`,`tbl_room_status`.`attendance` AS `attendance` from (((`tbl_room_status` left join `tbl_courses` on((`tbl_room_status`.`course_id` = `tbl_courses`.`course_id`))) left join `tbl_teachers` on((`tbl_courses`.`teacher_id` = `tbl_teachers`.`teacher_id`))) left join `tbl_schedule` on((`tbl_courses`.`course_id` = `tbl_schedule`.`course_id`)));
+
 select tbl_room_status.class_date, tbl_room_status.room_id, tbl_courses.course_name, tbl_teachers.teacher_first_name,
  tbl_teachers.teacher_last_name, tbl_schedule.class_length, tbl_room_status.attendance
 from tbl_room_status 
