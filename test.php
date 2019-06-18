@@ -1,3 +1,3 @@
 <?php
-echo "fuck yes!";
+echo "yes!";
 ?>

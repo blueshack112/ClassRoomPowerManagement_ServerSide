@@ -108,7 +108,7 @@ select * from tbl_Schedule;
 
 insert into tbl_room_status values (1001,1001,101102103,25,curdate(), 1);
 
-/*Below is bullshit*/
+/*Below is useless*/
 insert into tbl_room_status(room_id, course_id, relay_used, attendance, date, slot)
 values
         (01, 0002, 101, 22, 2019-01-07, 1),
