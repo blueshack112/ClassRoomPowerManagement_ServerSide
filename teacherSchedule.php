@@ -12,6 +12,7 @@ class ScheduleItem {
     var $dayOfWeek;
     var $slot;
     var $classLength;
+    var $classAttendance;
     var $isExtra;       // if came from extra schedule table. False if not and True if yes.
 }
 

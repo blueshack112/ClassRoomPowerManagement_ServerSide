@@ -6,8 +6,10 @@ error_reporting (E_ALL ^ E_WARNING && E_NOTICE);
 //Response class
 class AddAttendanceResponse {
     var $successful;
+    var $moreThanMaxStudents;
     function __construct () {
         $this->successful = false;
+        $this->moreThanMaxStudents = true;
     }
 }
 
@@ -29,22 +31,39 @@ $roomID = $_POST["roomID"];
 $courseID = $_POST["courseID"];
 $attendance = $_POST["attendance"];
 
-
-//Run query for schedule ovverride
-$addAttendanceQuery = "UPDATE db_classroom_management.tbl_room_status set attendance =".$attendance." where room_id =".$roomID." AND course_id =".$courseID;
-$addAttendanceQueryResult = mysqli_query($conn, $addAttendanceQuery);
-
-//Handle schedule ovverride response
-$numberOfRows = mysqli_num_rows($addAttendanceQueryResult);
-$response = new AddAttendanceResponse();
-
-
-//Check if query worked properly
-if ($addAttendanceQueryResult == true) {
-    $response->successful = true;  
-} else {
-    $response->roomIsActive = false;
+// First we need to check if the attendance entered by the user is less than or equals to total students enrolled
+$getStudentsEnrolledQuery = "SELECT total_students_enrolled FROM db_classroom_management.tbl_courses WHERE course_id = " . $courseID;
+$getStudentsEnrolledQueryResult = mysqli_query($conn, $getStudentsEnrolledQuery);
+//Handle query for max students enrolled
+$numberOfRows = mysqli_num_rows($getStudentsEnrolledQueryResult);
+$goAhead = false;
+if ($numberOfRows >= 1) {
+    $row = mysqli_fetch_assoc($getStudentsEnrolledQueryResult);
+    $maxStudentsAllowed = intval($row['total_students_enrolled']);
+    $goAhead = true;
 }
 
-echo json_encode($response); 
+// Send the result if the attendance entered by user is less than or equal to the max students enrolled in that course
+$response = new AddAttendanceResponse();
+if ($goAhead && intval($attendance) <= $maxStudentsAllowed) {
+    //Run query for updating attendance
+    $addAttendanceQuery = "UPDATE db_classroom_management.tbl_room_status set attendance = " . $attendance . " where room_id = " . $roomID . " AND course_id = " . $courseID;
+    $addAttendanceQueryResult = mysqli_query($conn, $addAttendanceQuery);
+
+    //Handle attendance update
+    $numberOfRows = mysqli_num_rows($addAttendanceQueryResult);
+
+    //Check if query worked properly
+    if ($addAttendanceQueryResult == true) {
+        $response->successful = true;
+        $response->moreThanMaxStudents = false;
+    } else {
+        $response->successful = false;
+    }
+    echo json_encode($response); 
+} else {
+    $response->successful = true;
+    $response->moreThanMaxStudents = true;
+    echo json_encode($response);
+}
 ?>
