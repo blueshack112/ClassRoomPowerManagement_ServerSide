@@ -17,10 +17,10 @@ $message = "";
 //Response class
 class ExtraRequestResponse {
     var $successful;
-    var $moreThanMaxStudents;
+    var $errorCode;
     function __construct () {
         $this->successful = false;
-        $this->moreThanMaxStudents = true;
+        $this->errorCode = "";
     }
 }
 
@@ -37,16 +37,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-//Extract data from POST
-/*
-$requestType = $_POST["requestType"];
-$userID = $_POST["userID"];
-$courseID = $_POST["courseID"];
-$roomID = $_POST["roomID"];
-$dayOfWeek = $_POST["dayOfWeek"];
-$slot = $_POST["slot"];
-$length = $_POST["length"];
-*/
 $requestType = $_POST["requestType"];
 $generalReason = $_POST["generalReason"];
 $message = $_POST["message"];
@@ -85,9 +75,12 @@ if ($requestType == "CANCEL") {
         $scheduleIDToCancel = $row['extra_schedule_id'];
         $roomID = $row['room_id'];
     } else {
-        echo ("Does not exist\n");
+        // set the error response and exit the script
+        $response = new ExtraRequestResponse();
+        $response->successful = false;
+        $response->errorCode = "notexist";
+        echo json_encode($response);
         return;
-        // TODO: Class does not exist
     }
 
     // Check if the class is already cancelled (or requested to be cancelled) or not by checking for the same class in extra schedule
@@ -95,19 +88,30 @@ if ($requestType == "CANCEL") {
     $cancelCheckResult = mysqli_query($conn, $alreadyCancelCheck);
     $checkNo = mysqli_num_rows($cancelCheckResult);
     if ($checkNo > 0) {
-        echo ("Already cancelled");
+        // set the error response and exit the script
+        $response = new ExtraRequestResponse();
+        $response->successful = false;
+        $response->errorCode = "alreadycancelled";
+        echo json_encode($response);
         return;
-        // TODO: the class has already been cancelled
     }
 
     // Submit the request
     $insertCancel = "INSERT INTO db_classroom_management.tbl_extra_schedule (request_type, requestor, course_id, room_id, day_of_week, slot, class_length, general_reason, message) VALUES ("
     . "'" . $requestType . "'," . $userID . "," . $courseID . "," . $roomID . "," . $dayOfWeek . "," . $slot . "," . $length . ",'" . $generalReason . "','" . $message . "');";
     $cancelResult = mysqli_query($conn, $insertCancel);
-    if ($cancelResult == true)
-        echo ("Request submitted");
-    else {
-        echo ("Not submitted");
+    if ($cancelResult == true) {
+        // set the success response and exit the script
+        $response = new ExtraRequestResponse();
+        $response->successful = true;
+        $response->errorCode = "none";
+        echo json_encode($response);
+    } else {
+        // set the error response and exit the script
+        $response = new ExtraRequestResponse();
+        $response->successful = false;
+        $response->errorCode = "unknown";
+        echo json_encode($response);
     }
 } else {
     $userID = $_POST["userID"];
@@ -149,9 +153,11 @@ if ($requestType == "CANCEL") {
 
     // TODO check form extra too
     if ($normalNo > 0 || $extraNo > 0) {
-        echo "Schedule is busy";
+        $response = new ExtraRequestResponse();
+        $response->successful = false;
+        $response->errorCode = "slotbusy";
+        echo json_encode($response);
         return;
-        //TODO the day and slots are already taken
     }
     
     // Check if already requested
@@ -160,9 +166,11 @@ if ($requestType == "CANCEL") {
     $checkNo = mysqli_num_rows ($alreadyRequestCheckResult);
 
     if ($checkNo > 0) {
-        echo "You have already requested this one.";
+        $response = new ExtraRequestResponse();
+        $response->successful = false;
+        $response->errorCode = "alreadyrequested";
+        echo json_encode($response);
         return;
-        //TODO the same request has already been made
     }
 
     // Submit request
@@ -170,12 +178,17 @@ if ($requestType == "CANCEL") {
     . "'" . $requestType . "'," . $userID . "," . $courseID . "," . $roomID . "," . $dayOfWeek . "," . $slot . "," . $length . ",'" . $generalReason . "','" . $message . "');";
 
     if (mysqli_query($conn, $insertRequest)) {
-        echo "Submitted extra request.";
+        $response = new ExtraRequestResponse();
+        $response->successful = true;
+        $response->errorCode = "none";
+        echo json_encode($response);
     } else {
-        echo "Could not submit extra request.";
+        $response = new ExtraRequestResponse();
+        $response->successful = false;
+        $response->errorCode = "unknown";
+        echo json_encode($response);
     }
 
 }
-
 
 ?>
