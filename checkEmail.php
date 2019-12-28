@@ -49,7 +49,7 @@ if ($numberOfRows == 1) {
     $message .= "Your account id is " . $userID . "\nYour Password is " . $row["password"] . "\r\n";
     $message .= "Kind Regards.";
          
-    $header = "From:fypAreebaSabaZareen@hamdard.edu.pk \r\n";
+    $header = "From:fypAreebaSabaZareen@hamdard.edu.pk\r\n";
     $header .= "MIME-Version: 1.0\r\n";
     $header .= "Content-type: text/html\r\n";
          
