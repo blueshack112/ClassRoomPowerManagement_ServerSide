@@ -120,7 +120,6 @@ if ($requestType == "CANCEL") {
     $dayOfWeek = $_POST["dayOfWeek"];
     $slot = $_POST["slot"];
     $length = $_POST["length"];
-    // TODO: All the below tasks
     
     // Check if the day and slot (could be more than one due to length) is (or are) busy
     $normalWeekSchedule = "SELECT * FROM db_classroom_management.view_normal_schedule WHERE room_id = $roomID AND day_of_week = $dayOfWeek AND slot = $slot";
