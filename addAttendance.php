@@ -94,6 +94,7 @@ if ($goAhead && intval($attendance) <= $maxStudentsAllowed) {
 } else {
     $response->successful = true;
     $response->moreThanMaxStudents = true;
+    $response->alreadyEntered = false;
     echo json_encode($response);
 }
 ?>

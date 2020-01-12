@@ -1,0 +1,28 @@
+Eligible networks
+
+SSID: Syed Ali
+Pass: 4212526. 
+
+SSID: testnet
+pass: 12345678
+
+
+How to setup:
+1. Open Visual studio workspace (areeba)
+2. Check ip of computer using cmd -> ipconfig (Check Wireless Lan Wi-Fi)
+3. Enter this ip address in "managementUtilities.py" file "dbHost" variable.
+
+4. Start Xampp php server
+5. Start MySQL Workbench and connect to localhost database
+6. Open tbl_debug (right-click krke Select Rows wala option) (Use this table to change time in raspberry PI)
+
+7. Open Android Studio
+8. Use the IP address of your computer (found in step 2) and enter it in "MainActivity.java." file "URL" variable.
+9. Open GenyMotion and start Nexus 5X device (Make sure that wifi in the device is connected) (if not connected, close the device and start it again) (As you can see, wifi is connected)
+10. Pres the green play button to run the app.
+
+11. Go to visual studio. Open the "classroomManager.py" file. Click on the spider icon on the lef bar. Click on "Run with Python".
+
+Samajh aya? koi confusion ho tou let me know.
+yeh point 8 mein joh changes ki thi na ip address ki wo dikhao
+messenger pe audio bhejra 1 minute dekho and btao
